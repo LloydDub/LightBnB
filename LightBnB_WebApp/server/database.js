@@ -44,7 +44,18 @@ exports.getUserWithEmail = getUserWithEmail;
  * @return {Promise<{}>} A promise to the user.
  */
 const getUserWithId = function (id) {
-  return Promise.resolve(users[id]);
+  const userId = [id];
+  const queryString = `SELECT *
+  FROM users
+  WHERE id= $1`;
+
+  return pool
+    .query(queryString, userId)
+    .then((res) => {
+      console.log(res.rows);
+      return res.rows[0];
+    })
+    .catch((err) => console.error("query error", err.stack));
 };
 exports.getUserWithId = getUserWithId;
 
@@ -53,11 +64,27 @@ exports.getUserWithId = getUserWithId;
  * @param {{name: string, password: string, email: string}} user
  * @return {Promise<{}>} A promise to the user.
  */
+//values = users (name, email, password)
+//   This function should insert the new user into the database.
+// It will return a promise that resolves with the new user object. This object should contain the user's id after it's been added to the database.
+// Add RETURNING *; to the end of an INSERT query to return the objects that were inserted. This is handy when you need the auto generated id of an object you've just added to the database.
+
+// INSERT INTO users (name, end_date, property_id, guest_id)
+//     VALUES ($1, $2, $3, $4) RETURNING *;
+
 const addUser = function (user) {
-  const userId = Object.keys(users).length + 1;
-  user.id = userId;
-  users[userId] = user;
-  return Promise.resolve(user);
+  const userInfo = [user.name, user.email, user.password];
+  const queryString = `INSERT INTO users (
+    name, email, password) 
+    VALUES ($1, $2, $3);`;
+
+  return pool
+    .query(queryString, userInfo)
+    .then((res) => {
+      console.log(res.rows);
+      return res.rows[0];
+    })
+    .catch((err) => console.error("query error", err.stack));
 };
 exports.addUser = addUser;
 

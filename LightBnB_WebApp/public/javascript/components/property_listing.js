@@ -19,7 +19,7 @@ $(() => {
               ? `<p>${moment(property.start_date).format("ll")} - ${moment(
                   property.end_date
                 ).format("ll")}</p>`
-              : ``
+              : `<button id="reserve-property-${property.id}" class="reserve-button">Reserve</button>`
           }
           <footer class="property-listing__footer">
             <div class="property-listing__rating">${

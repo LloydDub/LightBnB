@@ -2,6 +2,8 @@ $(() => {
   window.propertyListing = {};
 
   function createListing(property, isReservation) {
+    console.log("HI", isReservation.upcoming, isReservation);
+
     return `
     <article class="property-listing">
         <section class="property-listing__preview-image">
@@ -28,10 +30,19 @@ $(() => {
             <div class="property-listing__price">$${
               property.cost_per_night / 100.0
             }/night</div>
+            ${
+              isReservation.upcoming
+                ? `<button id="update-property-${property.id}" class="update-button">Update</button>
+                <button id="delete-property-${property.id}" class="delete-button">Delete</button>
+              `
+                : ``
+            }
+            
           </footer>
         </section>
       </article>
     `;
+    console.log("HI", isReservation.upcoming);
   }
 
   window.propertyListing.createListing = createListing;

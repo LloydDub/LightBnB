@@ -16,3 +16,10 @@ Stretch: Customize the front end design of the application.
 npm intall for dependcies
 
 npm run local to launch server
+
+# Login
+
+example user
+login: harperblackwell@mail.com
+password: password
+
